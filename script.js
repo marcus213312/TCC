@@ -37,3 +37,4 @@ boxMensagens.scrollTop = boxMensagens.scrollHeight; // Rola para baixo
 function enviarMensagem() {
 const input = document.getElementById('input-msg');
 const texto = input.value.trim();
+}
