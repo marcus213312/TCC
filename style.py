@@ -187,3 +187,47 @@ return render_template('index.html')
 def handle_message(dados):
 # Quando recebe uma mensagem de um usuário, reenvia para TODOS conectados
 send(dados, broadcast=True)
+
+from flask import Flask, render_template, request, session, redirect, url_for
+from flask_socketio import SocketIO, send
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'chave_super_secreta_sports_hub'
+socketio = SocketIO(app, cors_allowed_origins="*")
+
+# Banco de Dados Simulado (Catálogo de Vendas)
+PRODUTOS = [
+    {"id": 1, "nome": "Chuteira Campo Pro", "preco": "299,90", "imagem": "https://images.unsplash.com/photo-1511886929837-354d827aae26?w=500&q=80"},
+    {"id": 2, "nome": "Camisa Oficial 24/25", "preco": "159,90", "imagem": "https://images.unsplash.com/photo-1580087433295-ab2600c1030e?w=500&q=80"},
+    {"id": 3, "nome": "Tênis Running X", "preco": "499,90", "imagem": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80"},
+    {"id": 4, "nome": "Bola de Basquete", "preco": "120,00", "imagem": "https://images.unsplash.com/photo-1519861531473-9200262188bf?w=500&q=80"}
+]
+
+@app.route('/')
+def home():
+    # Pega o nome do usuário logado (se houver)
+    usuario_logado = session.get('usuario')
+    return render_template('index.html', produtos=PRODUTOS, usuario=usuario_logado)
+
+@app.route('/login', methods=['POST'])
+def login():
+    # Salva o nome do usuário na sessão
+    nome = request.form.get('nome_usuario')
+    if nome:
+        session['usuario'] = nome
+    return redirect(url_for('home'))
+
+@app.route('/logout')
+def logout():
+    # Remove o usuário da sessão
+    session.pop('usuario', None)
+    return redirect(url_for('home'))
+
+@socketio.on('message')
+def handle_message(dados):
+    # Recebe { 'usuario': 'João', 'texto': 'Olá!' } e reenvia para todos
+    send(dados, broadcast=True)
+
+if __name__ == '__main__':
+    print("Servidor rodando! Acesse http://localhost:5000")
+    socketio.run(app, debug=True)

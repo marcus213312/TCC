@@ -358,3 +358,182 @@ socketio.run(app, debug=True)
 </body>
 
 <button onclick="enviarMensagem()"></button>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SportsHub - Loja & Chat</title>
+    <!-- Importando o Socket.IO do CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <style>
+        /* Estilos Globais */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
+        header { background-color: #E2001A; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .logo { font-size: 24px; font-weight: bold; cursor: pointer; letter-spacing: 1px;}
+        .nav-links button { background: none; border: none; color: white; font-size: 16px; margin: 0 10px; cursor: pointer; font-weight: bold; transition: 0.3s; padding: 10px; border-radius: 5px; }
+        .nav-links button:hover, .nav-links button.active { background-color: rgba(255,255,255,0.2); }
+        
+        .login-area button, .login-area a { background-color: white; color: #E2001A; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; text-decoration: none; transition: 0.3s;}
+        .login-area button:hover, .login-area a:hover { background-color: #fdd; }
+        
+        /* Layout Principal */
+        main { padding: 30px 20px; max-width: 1200px; margin: 0 auto; }
+        .tab-content { display: none; animation: fadeIn 0.5s; }
+        .active-tab { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Estilos da Loja */
+        .grid-produtos { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 25px; }
+        .produto-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s; }
+        .produto-card:hover { transform: translateY(-5px); }
+        .produto-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; }
+        .produto-card h3 { margin: 15px 0 5px; color: #333; }
+        .produto-card p { color: #E2001A; font-size: 20px; font-weight: bold; margin: 5px 0 15px;}
+        .btn-comprar { background-color: #28a745; color: white; border: none; padding: 12px; width: 100%; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.3s;}
+        .btn-comprar:hover { background-color: #218838; }
+
+        /* Estilos do Chat */
+        .chat-container { background: white; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); display: flex; flex-direction: column; height: 550px; }
+        .mensagens { flex-grow: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; background-color: #fafafa; }
+        .msg { margin-bottom: 12px; padding: 12px 15px; border-radius: 15px; max-width: 75%; font-size: 15px; line-height: 1.4; }
+        .msg.bot { background-color: #e9ecef; color: #333; align-self: flex-start; border-bottom-left-radius: 0; }
+        .msg.user { background-color: #E2001A; color: white; align-self: flex-end; border-bottom-right-radius: 0; }
+        .msg-autor { font-size: 12px; font-weight: bold; margin-bottom: 4px; display: block;}
+        .input-area { display: flex; padding: 15px; background: white; border-top: 1px solid #ddd; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;}
+        .input-area input { flex-grow: 1; padding: 12px; border: 1px solid #ccc; border-radius: 5px; margin-right: 10px; font-size: 16px;}
+        .input-area button { background-color: #E2001A; color: white; border: none; padding: 10px 25px; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold;}
+
+        /* Modal de Login */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 30px; border-radius: 10px; text-align: center; width: 300px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);}
+        .modal-content input { width: 90%; padding: 10px; margin: 15px 0; border: 1px solid #ccc; border-radius: 5px; }
+        .modal-content button { background: #E2001A; color: white; border: none; padding: 10px 20px; border-radius: 5px; width: 100%; cursor: pointer; font-weight: bold;}
+        .close-modal { float: right; cursor: pointer; font-size: 20px; font-weight: bold; color: #999; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">⚽ SportsHub</div>
+        <div class="nav-links">
+            <button id="btn-loja" class="active" onclick="mudarAba('loja', this)">Loja</button>
+            <button id="btn-chat" onclick="mudarAba('chat', this)">Chat Global</button>
+        </div>
+        <div class="login-area">
+            {% if usuario %}
+                <span>Olá, <strong>{{ usuario }}</strong>!</span>
+                <a href="/logout" style="margin-left: 10px;">Sair</a>
+            {% else %}
+                <button onclick="abrirModal()">Entrar / Cadastrar</button>
+            {% endif %}
+        </div>
+    </header>
+
+    <main>
+        <!-- ABA LOJA -->
+        <section id="loja" class="tab-content active-tab">
+            <h2>🔥 Lançamentos Esportivos</h2>
+            <div class="grid-produtos">
+                <!-- O Jinja2 (Python) cria os cards dinamicamente -->
+                {% for produto in produtos %}
+                <div class="produto-card">
+                    <img src="{{ produto.imagem }}" alt="{{ produto.nome }}">
+                    <h3>{{ produto.nome }}</h3>
+                    <p>R$ {{ produto.preco }}</p>
+                    <button class="btn-comprar" onclick="alert('Adicionado ao carrinho!')">Comprar</button>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- ABA CHAT -->
+        <section id="chat" class="tab-content">
+            <h2>💬 Chat da Comunidade</h2>
+            <div class="chat-container">
+                <div class="mensagens" id="box-mensagens">
+                    <div class="msg bot"><span class="msg-autor">Sistema</span>Bem-vindo ao chat da SportsHub! Compartilhe suas dicas esportivas.</div>
+                </div>
+                <div class="input-area">
+                    <input type="text" id="input-msg" placeholder="Digite sua mensagem..." onkeypress="handleEnter(event)">
+                    <button onclick="enviarMensagem()">Enviar</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- MODAL DE LOGIN -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="fecharModal()">&times;</span>
+            <h2>Acessar SportsHub</h2>
+            <form action="/login" method="POST">
+                <input type="text" name="nome_usuario" placeholder="Digite seu nome" required>
+                <button type="submit">Entrar no Sistema</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // 1. Variável do Usuário Logado (Puxa do Python)
+        const usuarioAtual = "{{ usuario if usuario else '' }}";
+
+        // 2. Lógica de Abas
+        function mudarAba(abaId, elemento) {
+            document.querySelectorAll('.tab-content').forEach(aba => aba.classList.remove('active-tab'));
+            document.getElementById(abaId).classList.add('active-tab');
+            
+            document.querySelectorAll('.nav-links button').forEach(btn => btn.classList.remove('active'));
+            elemento.classList.add('active');
+        }
+
+        // 3. Lógica do Modal de Login
+        function abrirModal() { document.getElementById('loginModal').style.display = 'flex'; }
+        function fecharModal() { document.getElementById('loginModal').style.display = 'none'; }
+
+        // 4. Lógica de WebSockets (Chat Real-time)
+        const socket = io();
+
+        // Escutando mensagens do servidor
+        socket.on('message', function(dados) {
+            const boxMensagens = document.getElementById('box-mensagens');
+            const divMsg = document.createElement('div');
+
+            // Verifica se a mensagem é minha ou de outro
+            if(dados.usuario === usuarioAtual) {
+                divMsg.className = 'msg user';
+                divMsg.innerHTML = `<span class="msg-autor">Você</span>${dados.texto}`;
+            } else {
+                divMsg.className = 'msg bot';
+                divMsg.innerHTML = `<span class="msg-autor">${dados.usuario}</span>${dados.texto}`;
+            }
+
+            boxMensagens.appendChild(divMsg);
+            boxMensagens.scrollTop = boxMensagens.scrollHeight;
+        });
+
+        // Enviando mensagem
+        function enviarMensagem() {
+            if (!usuarioAtual) {
+                alert("Você precisa fazer login para usar o chat!");
+                abrirModal();
+                return;
+            }
+
+            const input = document.getElementById('input-msg');
+            const texto = input.value.trim();
+
+            if (texto !== '') {
+                // Envia para o Python: { usuario: "Nome", texto: "Sua mensagem" }
+                socket.send({ usuario: usuarioAtual, texto: texto });
+                input.value = ''; 
+            }
+        }
+
+        function handleEnter(event) {
+            if (event.key === 'Enter') enviarMensagem();
+        }
+    </script>
+</body>
+</html>
