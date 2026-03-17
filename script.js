@@ -36,4 +36,4 @@ boxMensagens.scrollTop = boxMensagens.scrollHeight; // Rola para baixo
 // Função que ENVIA a mensagem para o servidor
 function enviarMensagem() {
 const input = document.getElementById('input-msg');
-const texto = input.value.trim();
+const texto = input.ariaValueText = 
