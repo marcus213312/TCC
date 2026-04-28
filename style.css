@@ -8,5 +8,23 @@
   font-size: 100;
   color: #ce111100;
   margin-bottom: 25px;
+  
+  background-color: f5f5f5;
+  padding: 10px;
+  border-radius: 8px;
+  border: 2px solid #ce1111;
+
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  text-align: center;
+
+  position: relative;
   bottom: 24px;
+
+  transition: 0.3s;
+}
+
+.teste:hover {
+  background-color: #ce1111;
+  color: white;
 }
