@@ -29,19 +29,7 @@
   color: white;
 }
 
-*.aba lateral { 
-  margin: 5;
-  padding: 2;
-  box-sizing: border-box;
-  box-shadow: #241;
-}
 
-.aba lateral:hover { 
-  font-size: small;
-  color: aliceblue;
-  margin-right: 25px;
-
-}
 
 
 
