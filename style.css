@@ -1,7 +1,8 @@
 *{
-  margin: 5;
-  padding: 4;
+  margin: 10;
+  padding: 5;
   box-sizing: border-box;
+  width: 10px;
 }
 
 .teste {
