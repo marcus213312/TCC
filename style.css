@@ -32,7 +32,13 @@
   color: white;
 }
 
+*{
+  max-width: 500px;
+  max-width: 300px;
 
+  min-width: 5px;
+  min-height: 10px;
+}
 
 
 
