@@ -2,8 +2,9 @@
   margin: 10;
   padding: 5;
   box-sizing: border-box;
-  width: 10px;
-  height: 20px;
+  width: 200px;
+  height: 100px;
+  background-color: azure;
 }
 
 .teste {
