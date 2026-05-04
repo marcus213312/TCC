@@ -2,47 +2,112 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
-    <title>noticias</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coremotion - Plataforma Esportiva</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-
 <body>
-    <p class="teste">teste de parágrafo</p>
 
-    <meta name="viewport" content="width=device-width, initial-scale="1.0">
+    <div class="app-container">
+        <nav class="sidebar" id="sidebar">
+            <div class="logo-section">
+                <div class="logo-icon">C</div>
+                <span class="logo-text">COREMOTION</span>
+            </div>
+
+            <ul class="nav-links">
+                <li onclick="showSection('inicio', this)" class="active-link">
+                    <i class="fa-solid fa-house"></i> <span>INÍCIO</span>
+                </li>
+                <li onclick="showSection('midia', this)">
+                    <i class="fa-solid fa-image"></i> <span>MÍDIA</span>
+                </li>
+                <li onclick="showSection('amistosos', this)">
+                    <i class="fa-solid fa-calendar-days"></i> <span>AMISTOSOS</span>
+                </li>
+                <li onclick="showSection('market', this)">
+                    <i class="fa-solid fa-bag-shopping"></i> <span>MARKET</span>
+                </li>
+            </ul>
+
+            <div class="profile-area">
+                <div class="profile-btn" onclick="showSection('perfil', this)">
+                    <i class="fa-solid fa-user-circle"></i> <span>PERFIL</span>
+                </div>
+            </div>
+        </nav>
+
+        <main class="content-area">
+            
+            <section id="inicio" class="content-section active">
+                <h1 class="section-title">Início</h1>
+                <div class="news-container">
+                    <div class="card">
+                        <h3>Novas Regras de Transferência</h3>
+                        <p>Confira as atualizações para a próxima temporada de amistosos.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="midia" class="content-section">
+                <h1 class="section-title">Mídia</h1>
+                <p>Compartilhe suas fotos em arenas e ginásios.</p>
+                <div class="media-placeholder">Galeria de Fotos em breve...</div>
+            </section>
+
+            <section id="amistosos" class="content-section">
+                <h1 class="section-title">Amistosos</h1>
+                <button class="btn-action">Inscrever meu Time</button>
+            </section>
+
+            <section id="market" class="content-section">
+                <h1 class="section-title">Market</h1>
+                <p>Equipamentos, chuteiras e acessórios esportivos.</p>
+            </section>
+
+            <section id="perfil" class="content-section">
+                <div class="auth-card">
+                    <div class="profile-avatar">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <h2 class="auth-title">Comece agora sua história!</h2>
+                    
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label>Nome completo</label>
+                            <input type="text" placeholder="digite aqui...">
+                        </div>
+                        <div class="input-group">
+                            <label>Nº de telefone</label>
+                            <input type="tel" placeholder="digite aqui...">
+                        </div>
+                        <div class="input-group">
+                            <label>Altura (cm)</label>
+                            <input type="number" placeholder="ex: 180">
+                        </div>
+                        <div class="input-group">
+                            <label>Peso (kg)</label>
+                            <input type="number" placeholder="ex: 75">
+                        </div>
+                        <div class="input-group">
+                            <label>E-mail</label>
+                            <input type="email" placeholder="digite aqui...">
+                        </div>
+                        <div class="input-group">
+                            <label>Senha</label>
+                            <input type="password" placeholder="digite aqui...">
+                        </div>
+                    </div>
+
+                    <button class="btn-submit">Cadastre-se</button>
+                    <p class="auth-footer">Já tem conta? <a href="#">Vá para o Login</a></p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="script.js"></script>
 </body>
-
-<section>
-    <h1>Feed</h1>
-
-    <article>
-        <h3>Post 1</h3>
-
-        <p>bakayarooo</p>
-    </article>
-
-    <article>
-        <h3>Post 2</h3>
-
-        <p>bakaa</p>
-    </article>
-
-</section>
-
-<div class="caixa">
-    <h4>Alguma coisa</h4>
-    <p>parágrafofargàrap</p>
-
-</div>
-
-<h6>parte de cima</h6>
-<p>parágrafo da parte de cima</p>
-
-<hr>
-
-<h6>parte de baixo</h6>
-<p>parágrafo da parte de baixo</p>
-    
 </html>
