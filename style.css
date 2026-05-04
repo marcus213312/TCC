@@ -40,5 +40,14 @@
   min-height: 10px;
 }
 
+.caixa {
+  border: 2px solid #cecece;
+
+  padding: 20px;
+
+  margin: 20px 0;
+
+  border-radius: 8px;
+}
 
 
