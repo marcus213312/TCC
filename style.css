@@ -263,3 +263,108 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* Reset básico e tema escuro */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #121212; /* Fundo escuro igual ao seu */
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Ícone de usuário simulado */
+.user-icon {
+    width: 80px;
+    height: 80px;
+    background-color: #333;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.user-icon svg {
+    width: 40px;
+    fill: white;
+}
+
+h2 {
+    margin-bottom: 30px;
+    font-size: 24px;
+}
+
+.form-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #aaaaaa;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 20px;
+    border-radius: 25px; /* Bordas arredondadas como na sua imagem */
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+
+.btn-login {
+    background: linear-gradient(90deg, #ff0000, #ff4d4d); /* Botão vermelho */
+    color: white;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: opacity 0.3s;
+}
+
+.btn-login:hover {
+    opacity: 0.8;
+}
+
+.links {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.links a {
+    color: #3b5bdb; /* Cor do link azul */
+    text-decoration: none;
+}
+
+.links a:hover {
+    text-decoration: underline;
+}
+
+/* Mensagem de erro oculta por padrão */
+#mensagemErro {
+    color: #ff4d4d;
+    margin-top: 15px;
+    display: none;
+}
